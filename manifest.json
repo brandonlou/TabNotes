@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+
+  "name": "TabNotes",
+  "short_name": "TN",
+  "author": "Brandon Lou",
+  "description": "Quick todos, reminders, deadlines, all conveniently there when you start a new tab!",
+
+  "version": "0.1",
+  "version_name": "0.1 night",
+
+  "chrome_url_overrides" : {
+   "newtab": "index.html"
+  },
+
+  "permissions": [
+    "storage"
+  ],
+
+  "incognito": "split"
+}

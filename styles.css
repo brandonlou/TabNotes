@@ -1,0 +1,32 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 10vh 10vw 10vh 10vw;
+}
+
+textarea {
+  border-color: black;
+  overflow: auto;
+}
+
+/* Remove blue borders on hover */
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
