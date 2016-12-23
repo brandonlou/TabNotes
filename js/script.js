@@ -68,7 +68,7 @@ function updateMessage() {
       $('#title').text("Good morning " + name);
     } else if (h < 17) { // afternoon
       $('#title').text("Good aftenoon " + name);
-    } else if (h < 10) { // evening
+    } else if (h < 22) { // evening
       $('#title').text("Good evening " + name);
     } else { // night
       $('#title').text("Good night " + name);
