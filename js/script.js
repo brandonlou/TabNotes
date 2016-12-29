@@ -2,15 +2,7 @@
 var editor = new Editor();
 editor.render();
 
-var timer = setInterval(save, 100); // Update every 100ms
 var storedNotes;
-
-/* Get time and print title message accordingly */
-var d = new Date(),
-    h = d.getHours(),
-    name;
-
-updateMessage();
 
 /* First time: Gets stored notes and displays it */
 chrome.storage.sync.get(['notes'], function(data) {
@@ -22,7 +14,7 @@ chrome.storage.sync.get(['notes'], function(data) {
   editor.togglePreview();
 })
 
-/* Every 100ms */
+/* Runs every 100ms */
 function save() {
   chrome.storage.sync.get(['notes'], function(data) {
     storedNotes = data.notes;
@@ -35,20 +27,37 @@ function save() {
 }
 
 var settingsRendered = false;
-
+var infoRendered = false;
+/* Settings ajax */
 $("#settingsButton").click(function() {
   if(settingsRendered) {
-    $("#settingsText").text("");
+    $("#extraText").text("");
     settingsRendered = false;
+    infoRendered = false;
   } else {
     $.ajax({url: "templates/settings.html", success: function(result){
-        $("#settingsText").html(result);
+        $("#extraText").html(result);
         $("#nameInput").val(name);
         settingsRendered = true;
+        infoRendered = false;
     }});
   }
 });
 
+$("#infoButton").click(function() {
+  if(infoRendered) {
+    $("#extraText").text("");
+    infoRendered = false;
+  } else {
+    $.ajax({url: "templates/info.html", success: function(result){
+        $("#extraText").html(result);
+        settingsRendered = false;
+        infoRendered = true;
+    }});
+  }
+});
+
+/* When settings ajax is done loading, add event listener */
 $( document ).ajaxComplete(function() {
   $("#saveSettings").click(function() {
     chrome.storage.local.set({'userName': $("#nameInput").val()});
@@ -57,6 +66,11 @@ $( document ).ajaxComplete(function() {
     $("#settingsText").text("");
   });
 });
+
+/* Get time and print title message accordingly */
+var d = new Date(),
+    h = d.getHours(),
+    name;
 
 function updateMessage() {
   chrome.storage.local.get(['userName'], function(data) {
@@ -75,3 +89,23 @@ function updateMessage() {
     }
   });
 }
+
+$('.CodeMirror').dblclick(function(e){
+  e.stopPropagation(); // stops next event handler ish
+  toggle("inside");
+});
+$(document).dblclick(function(){
+  toggle("outside");
+});
+
+function toggle(clicked) {
+  if(onPreview && clicked == "inside") {
+    editor.togglePreview();
+  } else if (!onPreview && clicked == "outside") {
+    editor.togglePreview();
+  }
+}
+
+// Start !
+updateMessage();
+var timer = setInterval(save, 100); // Update every 100ms

@@ -1,3 +1,4 @@
+var onPreview;
 (function(global) {
 // CodeMirror version 3.15
 //
@@ -7034,6 +7035,11 @@ function redo(editor) {
  * Preview action.
  */
 function togglePreview(editor) {
+  if(onPreview) {
+    onPreview = false;
+  } else {
+    onPreview = true;
+  }
   var toolbar = editor.toolbar.preview;
   var parse = editor.constructor.markdown;
   var cm = editor.codemirror;
@@ -7050,11 +7056,7 @@ function togglePreview(editor) {
     );
     toolbar.className = toolbar.className.replace(/\s*active\s*/g, '');
   } else {
-    /* When the preview button is clicked for the first time,
-     * give some time for the transition from editor.css to fire and the view to slide from right to left,
-     * instead of just appearing.
-     */
-    setTimeout(function() {preview.className += ' editor-preview-active'}, 1);
+    preview.className += ' editor-preview-active'
     toolbar.className += ' active';
   }
   var text = cm.getValue();
